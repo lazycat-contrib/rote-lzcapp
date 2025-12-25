@@ -1,0 +1,8 @@
+# manifest: 指定 lpk 包的 manifest.yml 文件路径
+manifest: ./lzc-manifest.yml
+
+# pkgout: lpk 包的输出路径
+pkgout: ./
+
+# icon: 指定 lpk 包 icon 的路径（必须是 PNG 格式，512x512）
+icon: ./icon.png
