@@ -33,7 +33,55 @@ images:
     source: rabithua/rote-frontend
     channel: custom
     sort: created
-    tag_regex: '^latest$'
+    tag_regex: '^latest
+  # 辅助 postgres：17.x 两段式 tag 家族 → custom + 版本映射 {version}.0
+  - id: rote-postgres
+    target: service
+    service: rote-postgres
+    source: library/postgres
+    channel: custom
+    sort: semver
+    tag_regex: '^17\.\d+$'
+    version_regex: '^(?P<version>17\.\d+)$'
+    version_template: '{version}.0'
+    delivery:
+      mode: lazycat
+stores:
+  official:
+    enabled: true
+    skip_if_version_exists: true
+    changelog_locales: [zh, en]
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: Rote
+    summary: "一个与众不同的个人笔记仓库"
+
+    version_regex: '^latest
+  # 辅助 postgres：17.x 两段式 tag 家族 → custom + 版本映射 {version}.0
+  - id: rote-postgres
+    target: service
+    service: rote-postgres
+    source: library/postgres
+    channel: custom
+    sort: semver
+    tag_regex: '^17\.\d+$'
+    version_regex: '^(?P<version>17\.\d+)$'
+    version_template: '{version}.0'
+    delivery:
+      mode: lazycat
+stores:
+  official:
+    enabled: true
+    skip_if_version_exists: true
+    changelog_locales: [zh, en]
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: Rote
+    summary: "一个与众不同的个人笔记仓库"
+
+    version_template: '0.0.0'
     delivery:
       mode: lazycat
   # 辅助 postgres：17.x 两段式 tag 家族 → custom + 版本映射 {version}.0
