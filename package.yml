@@ -1,0 +1,14 @@
+package: cloud.lazycat.app.rote
+version: 1.2.2
+name: Rote
+description: "一个与众不同的个人笔记仓库"
+min_os_version: "1.5.0"
+homepage: https://github.com/Rabithua/Rote
+author: Rabithua
+locales:
+  zh:
+    description: "一个与众不同的个人笔记仓库"
+    name: Rote
+  en:
+    description: "A personal note repository that looks different"
+    name: Rote

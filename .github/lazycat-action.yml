@@ -1,0 +1,60 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: .lazycat-build/rote.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: rote-backend
+    bump: patch
+build:
+  run_buildscript: false
+images:
+  # 主应用：上游 rabithua 仅 latest（mutable）与 develop-<sha> 开发流，无 release semver 家族 → latest + bump: patch
+  - id: rote-backend
+    target: service
+    service: rote-backend
+    source: rabithua/rote-backend
+    channel: custom
+    sort: created
+    tag_regex: '^latest$'
+    delivery:
+      mode: lazycat
+  - id: rote-frontend
+    target: service
+    service: rote-frontend
+    source: rabithua/rote-frontend
+    channel: custom
+    sort: created
+    tag_regex: '^latest$'
+    delivery:
+      mode: lazycat
+  # 辅助 postgres：17.x 两段式 tag 家族 → custom + 版本映射 {version}.0
+  - id: rote-postgres
+    target: service
+    service: rote-postgres
+    source: library/postgres
+    channel: custom
+    sort: semver
+    tag_regex: '^17\.\d+$'
+    version_regex: '^(?P<version>17\.\d+)$'
+    version_template: '{version}.0'
+    delivery:
+      mode: lazycat
+stores:
+  official:
+    enabled: true
+    skip_if_version_exists: true
+    changelog_locales: [zh, en]
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: Rote
+    summary: "一个与众不同的个人笔记仓库"
