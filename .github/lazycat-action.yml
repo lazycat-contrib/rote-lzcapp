@@ -13,30 +13,28 @@ update:
   version_source:
     type: image
     image: rote-backend
-    bump: patch
+
 build:
   run_buildscript: false
 images:
-  # 主应用：上游 rabithua 仅 latest（mutable）与 develop-<sha> 开发流，无 release semver 家族 → latest + bump: patch
+  # 主应用：上游 v2.x 完整 SemVer 家族（v2.0.2~v2.4.2），排除 develop-* / latest
   - id: rote-backend
     target: service
     service: rote-backend
     source: rabithua/rote-backend
-    channel: custom
-    sort: created
-    tag_regex: '^latest$'
+    channel: stable
+    sort: semver
+    tag_regex: '^v\d+\.\d+\.\d+$'
     delivery:
       mode: lazycat
-  # 前端同为 latest mutable，且非 version_source → 需 version 映射供版本解析（映射为固定 0.0.0，不影响发布版本）
+  # 前端同为 v2.x SemVer 家族
   - id: rote-frontend
     target: service
     service: rote-frontend
     source: rabithua/rote-frontend
-    channel: custom
-    sort: created
-    tag_regex: '^latest$'
-    version_regex: '^(?P<version>latest)$'
-    version_template: '0.0.0'
+    channel: stable
+    sort: semver
+    tag_regex: '^v\d+\.\d+\.\d+$'
     delivery:
       mode: lazycat
   # 辅助 postgres：17.x 两段式 tag 家族 → custom + 版本映射 {version}.0
