@@ -6,14 +6,12 @@ application:
     - location: /
       domain_prefix: backend
       backend: http://rote-backend:3000/
-
     - location: /
       backend: http://rote-frontend:80/
-
 services:
   rote-postgres:
-    # upstream: postgres:17.11
-    image: postgres:17.11
+    # upstream: library/postgres:17.11
+    image: registry.lazycat.cloud/czyt/library/postgres:d98799bcb9fa429e
     environment:
       - POSTGRES_USER=rote
       - POSTGRES_PASSWORD={{ stable_secret "rote_db_password" }}
@@ -28,19 +26,17 @@ services:
       start_period: 30s
     binds:
       - /lzcapp/var/postgres:/var/lib/postgresql/data
-
   rote-backend:
-    # upstream: rabithua/rote-backend:latest
-    image: rabithua/rote-backend:latest
+    # upstream: rabithua/rote-backend:latest@sha256:c5f3bad8242ec8a26deb19291ed8039aabf6ff83b4184b3232a96d26fa330ddc
+    image: registry.lazycat.cloud/czyt/rabithua/rote-backend:8b01cbc52f6bcb0d
     environment:
       - POSTGRESQL_URL=postgresql://rote:{{ stable_secret "rote_db_password" }}@rote-postgres:5432/rote
     depends_on:
       - rote-postgres
     command: sh -c 'sleep 15 && bun run dist/scripts/runMigrations.js && bun run dist/server.js'
-
   rote-frontend:
     # upstream: rabithua/rote-frontend:latest
-    image: rabithua/rote-frontend:latest
+    image: registry.lazycat.cloud/czyt/rabithua/rote-frontend:0fcd64e695da5c63
     environment:
       - VITE_API_BASE=https://backend-{{.S.AppDomain}}
     depends_on:
