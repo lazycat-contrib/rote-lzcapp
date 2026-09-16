@@ -28,7 +28,7 @@ services:
       - /lzcapp/var/postgres:/var/lib/postgresql/data
   rote-backend:
     # upstream: rabithua/rote-backend:v2.4.2
-    image: rabithua/rote-backend:v2.4.2
+    image: registry.lazycat.cloud/czyt/rabithua/rote-backend:ec8621a8c253dbff
     environment:
       - POSTGRESQL_URL=postgresql://rote:{{ stable_secret "rote_db_password" }}@rote-postgres:5432/rote
     depends_on:
@@ -36,7 +36,7 @@ services:
     command: sh -c 'sleep 15 && bun run dist/scripts/runMigrations.js && bun run dist/server.js'
   rote-frontend:
     # upstream: rabithua/rote-frontend:v2.4.2
-    image: rabithua/rote-frontend:v2.4.2
+    image: registry.lazycat.cloud/czyt/rabithua/rote-frontend:9ce1fba8ae76bb7e
     environment:
       - VITE_API_BASE=https://backend-{{.S.AppDomain}}
     depends_on:
