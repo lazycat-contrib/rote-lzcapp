@@ -27,7 +27,7 @@ services:
     binds:
       - /lzcapp/var/postgres:/var/lib/postgresql/data
   rote-backend:
-    # upstream: rabithua/rote-backend:v2.4.2
+    # upstream: rabithua/rote-backend:latest@sha256:c5f3bad8242ec8a26deb19291ed8039aabf6ff83b4184b3232a96d26fa330ddc
     image: registry.lazycat.cloud/czyt/rabithua/rote-backend:8b01cbc52f6bcb0d
     environment:
       - POSTGRESQL_URL=postgresql://rote:{{ stable_secret "rote_db_password" }}@rote-postgres:5432/rote
