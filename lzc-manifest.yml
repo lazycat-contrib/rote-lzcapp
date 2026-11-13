@@ -10,8 +10,8 @@ application:
       backend: http://rote-frontend:80/
 services:
   rote-postgres:
-    # upstream: library/postgres:17.11
-    image: registry.lazycat.cloud/czyt/library/postgres:d98799bcb9fa429e
+    # upstream: library/postgres:17.12
+    image: registry.lazycat.cloud/czyt/library/postgres:f78d57007e85a808
     environment:
       - POSTGRES_USER=rote
       - POSTGRES_PASSWORD={{ stable_secret "rote_db_password" }}
